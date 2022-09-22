@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -32,7 +34,7 @@ public class RecipeAppController {
 
   @GetMapping("/api/recipes")
   public String renderPage(Model model) {
-    List<Recipe> recipeList = recipeAppService.findAllRecipe();
+    List<Recipe> recipeList = recipeAppService.returnSortedAllRecipeList();
     model.addAttribute("recipeList", recipeList);
     return "recipes";
   }
@@ -56,15 +58,15 @@ public class RecipeAppController {
   }
 
   @GetMapping("/api/addRecipe")
-  public String renderAddRecipePage() {
+  public String renderAddRecipePage(Model model) {
 
     return "register_recipe";
   }
 
-  @PostMapping("/api/recipes")
-  public ResponseEntity<Recipe> addNewRecipe(@RequestBody NewRecipeDTO recipeDTO) {
-    Recipe recipe = recipeAppService.addNewRecipe(recipeDTO);
-    return ResponseEntity.status(201).body(recipe);
+  @PostMapping("/api/registerRecipe")
+  public String addNewRecipe(@ModelAttribute("newrecipedto") NewRecipeDTO recipeDTO) {
+    recipeAppService.addNewRecipe(recipeDTO);
+    return "redirect:/api/recipes";
   }
 
 

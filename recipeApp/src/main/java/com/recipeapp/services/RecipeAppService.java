@@ -9,6 +9,8 @@ public interface RecipeAppService {
 
   List<Recipe> findAllRecipe();
 
+  List<Recipe> returnSortedAllRecipeList();
+
   Recipe addNewRecipe(NewRecipeDTO recipeDTO);
 
   void modifyRecipe(Recipe recipe, Integer recipeId);

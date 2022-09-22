@@ -6,6 +6,8 @@ import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import com.recipeapp.repositories.RecipeRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -24,6 +26,20 @@ public class RecipeAppServiceImpl implements RecipeAppService {
   @Override
   public List<Recipe> findAllRecipe() {
     return recipeRepository.findAll();
+  }
+
+  @Override
+  public List<Recipe> returnSortedAllRecipeList() {
+    List<Recipe> recipes = recipeRepository.findAll();
+    recipes.sort(new Comparator<Recipe>() {
+      @Override
+      public int compare(Recipe o1, Recipe o2) {
+        String s1 = o1.getRecipeName();
+        String s2 = o2.getRecipeName();
+        return s1.compareToIgnoreCase(s2);
+      }
+    });
+    return recipes;
   }
 
   @Override
