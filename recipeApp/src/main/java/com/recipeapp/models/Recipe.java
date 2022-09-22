@@ -11,22 +11,22 @@ public class Recipe {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private String name;
+  private String recipeName;
   private String ingredient;
   private String directions;
 
   public Recipe() {
   }
 
-  public Recipe(String name, String ingredient, String directions) {
-    this.name = name;
+  public Recipe(String recipeName, String ingredient, String directions) {
+    this.recipeName = recipeName;
     this.ingredient = ingredient;
     this.directions = directions;
   }
 
-  public Recipe(Integer id, String name, String ingredient, String directions) {
+  public Recipe(Integer id, String recipeName, String ingredient, String directions) {
     this.id = id;
-    this.name = name;
+    this.recipeName = recipeName;
     this.ingredient = ingredient;
     this.directions = directions;
   }
@@ -39,12 +39,12 @@ public class Recipe {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getRecipeName() {
+    return recipeName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setRecipeName(String recipeName) {
+    this.recipeName = recipeName;
   }
 
   public String getIngredient() {
