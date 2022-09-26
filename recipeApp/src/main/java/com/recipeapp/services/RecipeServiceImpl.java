@@ -1,25 +1,23 @@
 package com.recipeapp.services;
 
-import com.recipeapp.models.Recipe;
+import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import com.recipeapp.repositories.RecipeRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RecipeAppServiceImpl implements RecipeAppService {
+public class RecipeServiceImpl implements RecipeService {
 
   private RecipeRepository recipeRepository;
 
-  public RecipeAppServiceImpl(RecipeRepository recipeRepository) {
+  public RecipeServiceImpl(RecipeRepository recipeRepository) {
     this.recipeRepository = recipeRepository;
   }
 

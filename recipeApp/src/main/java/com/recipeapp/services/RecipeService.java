@@ -1,11 +1,11 @@
 package com.recipeapp.services;
 
-import com.recipeapp.models.Recipe;
+import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import java.util.List;
 
-public interface RecipeAppService {
+public interface RecipeService {
 
   List<Recipe> findAllRecipe();
 

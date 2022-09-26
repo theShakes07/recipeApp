@@ -1,4 +1,4 @@
-package com.recipeapp.models;
+package com.recipeapp.models.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

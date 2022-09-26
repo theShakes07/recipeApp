@@ -1,6 +1,6 @@
 package com.recipeapp.repositories;
 
-import com.recipeapp.models.Recipe;
+import com.recipeapp.models.entities.Recipe;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
