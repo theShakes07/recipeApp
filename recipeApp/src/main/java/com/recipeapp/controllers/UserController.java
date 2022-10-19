@@ -5,6 +5,7 @@ import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.security.JwtUtil;
 import com.recipeapp.services.UserService;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,12 @@ public class UserController {
   @GetMapping("/api/user/login")
   public String renderLoginPage() {
     return "login";
+  }
+
+  @GetMapping("/api/user/logout")
+  public String logout(HttpServletRequest request, HttpServletResponse response) {
+    response.addCookie(userService.logout(request));
+    return "redirect:/api/recipes";
   }
 
   @GetMapping("/api/user/register")
@@ -73,17 +80,8 @@ public class UserController {
     }
     final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
     final String jwt = jwtUtil.generateToken(userDetails);
-    resp.addCookie(cookieGenerator(jwt));
+    resp.addCookie(userService.cookieGenerator(jwt));
     return "redirect:/api/recipes";
-  }
-
-  private Cookie cookieGenerator(String jwt) {
-    Cookie cookie = new Cookie("Bearer", jwt);
-    cookie.setMaxAge(2 * 24 * 60 * 60);
-    cookie.setSecure(true);
-    cookie.setHttpOnly(true);
-    cookie.setPath("/api/");
-    return cookie;
   }
 
 }

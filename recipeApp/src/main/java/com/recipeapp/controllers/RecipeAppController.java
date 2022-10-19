@@ -36,14 +36,8 @@ public class RecipeAppController {
   public String renderPage(@CookieValue(value = "Bearer", required = false) String token,
                            Model model) {
     List<Recipe> recipeList = recipeService.returnSortedAllRecipeList();
-//    if(token != null) {
-//      flag = 1;
-//    } else {
-//      flag = 0;
-//    }
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("recipeList", recipeList);
-    //model.addAttribute("flag", flag);
     model.addAttribute("isLoggedIn", isLoggedIn);
     return "recipes";
   }

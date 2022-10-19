@@ -3,6 +3,9 @@ package com.recipeapp.services;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.repositories.UserRepository;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   @Override
   public MyUser login(LoginRequest loginRequest) {
     MyUser user = loadUserByUsername(loginRequest.getUsername());
-    if(user == null || !checkPassword(loginRequest.getPassword(), user.getPassword())) {
+    if (user == null || !checkPassword(loginRequest.getPassword(), user.getPassword())) {
       throw new RuntimeException("Bad password");
     } else {
       System.out.println("Password OK!");
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   @Override
   public MyUser loadUserByUsername(String username) throws UsernameNotFoundException {
     MyUser user = this.userRepository.findByUsername(username);
-    if(user==null) {
+    if (user == null) {
       System.out.println("User not found.");
       throw new UsernameNotFoundException("User not found!");
     }
@@ -59,10 +62,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   private boolean checkPassword(String password, String storedPassword) {
     boolean pwd_verified = false;
-    if(null == storedPassword|| !storedPassword.startsWith("$2a$"))
+    if (null == storedPassword || !storedPassword.startsWith("$2a$"))
       throw new IllegalArgumentException("Invalid hash provided for comparison");
     pwd_verified = BCrypt.checkpw(password, storedPassword);
     return (pwd_verified);
+  }
+
+  @Override
+  public Cookie cookieGenerator(String jwt) {
+    Cookie cookie = new Cookie("Bearer", jwt);
+    cookie.setMaxAge(2 * 24 * 60 * 60);
+    cookie.setSecure(true);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/api/");
+    return cookie;
+  }
+
+  @Override
+  public Cookie logout(HttpServletRequest request) {
+    Cookie bearerCookieRemove = new Cookie("Bearer", "");
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("Bearer")) {
+          bearerCookieRemove.setMaxAge(0);
+          bearerCookieRemove.setSecure(true);
+          bearerCookieRemove.setHttpOnly(true);
+          bearerCookieRemove.setPath("/api/");
+        }
+      }
+    }
+    return bearerCookieRemove;
   }
 
 }
