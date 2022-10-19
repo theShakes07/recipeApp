@@ -1,9 +1,14 @@
 package com.recipeapp.models.dtos;
 
+import javax.validation.constraints.NotBlank;
+
 public class NewRecipeDTO {
 
+  @NotBlank
   private String name;
+  @NotBlank
   private String ingredient;
+  @NotBlank
   private String directions;
 
   public NewRecipeDTO() {

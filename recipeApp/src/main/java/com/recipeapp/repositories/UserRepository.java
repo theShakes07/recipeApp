@@ -1,12 +1,16 @@
 package com.recipeapp.repositories;
 
-import com.recipeapp.models.entities.User;
+import com.recipeapp.models.entities.MyUser;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+@Repository
+public interface UserRepository extends CrudRepository<MyUser, Integer> {
 
-  List<User> findAll();
+  List<MyUser> findAll();
 
-  User findById(int id);
+  MyUser findByUsername(String username);
+
+  MyUser findById(int id);
 }

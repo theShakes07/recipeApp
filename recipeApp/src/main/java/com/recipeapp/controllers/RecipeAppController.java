@@ -7,6 +7,7 @@ import com.recipeapp.services.RecipeService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RecipeAppController {
+
+  boolean isLoggedIn = false;
 
   private RecipeService recipeService;
 
@@ -30,9 +33,18 @@ public class RecipeAppController {
   }
 
   @GetMapping("/api/recipes")
-  public String renderPage(Model model) {
+  public String renderPage(@CookieValue(value = "Bearer", required = false) String token,
+                           Model model) {
     List<Recipe> recipeList = recipeService.returnSortedAllRecipeList();
+//    if(token != null) {
+//      flag = 1;
+//    } else {
+//      flag = 0;
+//    }
+    isLoggedIn = loggedInChecker(token);
     model.addAttribute("recipeList", recipeList);
+    //model.addAttribute("flag", flag);
+    model.addAttribute("isLoggedIn", isLoggedIn);
     return "recipes";
   }
 
@@ -50,8 +62,8 @@ public class RecipeAppController {
   @GetMapping("/api/randomRecipe")
   public String returnRandomRecipe() {
     Recipe recipe = recipeService.randomRecipe();
-    int randomRecipeNumber = recipe.getId();
-    return "redirect:/api/recipes/" + randomRecipeNumber;
+    int randomRecipeId= recipe.getId();
+    return "redirect:/api/recipes/" + randomRecipeId;
   }
 
   @GetMapping("/api/addRecipe")
@@ -66,5 +78,8 @@ public class RecipeAppController {
     return "redirect:/api/recipes";
   }
 
+  private boolean loggedInChecker(String token) {
+    return isLoggedIn = token != null;
+  }
 
 }

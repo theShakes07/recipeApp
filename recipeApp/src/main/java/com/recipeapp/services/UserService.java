@@ -1,13 +1,19 @@
 package com.recipeapp.services;
 
-import com.recipeapp.models.entities.User;
+import com.recipeapp.models.dtos.login.LoginRequest;
+import com.recipeapp.models.entities.MyUser;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
-  void addUser(User user);
+  void saveUser(MyUser user);
 
-  void modifyUser(User user);
+  MyUser login(LoginRequest loginRequest);
 
-  void deleteUser(User user);
+  void modifyUser(MyUser user);
+
+  void deleteUser(MyUser user);
+
+  UserDetails loadUserByUsername(String username);
 
 }
