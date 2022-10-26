@@ -7,7 +7,7 @@
     <title>Index</title>
 </head>
 <body>
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar} : ~{fragments/navbar :: navbar}"></div>
 <div>
     <a th:href="'/api/recipes'">Recipes</a>
 </div>

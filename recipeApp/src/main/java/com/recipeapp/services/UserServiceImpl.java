@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     cookie.setMaxAge(2 * 24 * 60 * 60);
     cookie.setSecure(true);
     cookie.setHttpOnly(true);
-    cookie.setPath("/api/");
+    cookie.setPath("/");
     return cookie;
   }
 
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
           bearerCookieRemove.setMaxAge(0);
           bearerCookieRemove.setSecure(true);
           bearerCookieRemove.setHttpOnly(true);
-          bearerCookieRemove.setPath("/api/");
+          bearerCookieRemove.setPath("/");
         }
       }
     }

@@ -56,6 +56,7 @@ public class UserController {
     return "redirect:/api/recipes";
   }
 
+  // TODO: just for test, delete later
   @GetMapping("/api/secret")
   public ResponseEntity<?> secretPage(@CookieValue(value = "Bearer") String value) {
     System.out.println(value);

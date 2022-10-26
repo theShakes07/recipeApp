@@ -25,9 +25,20 @@ public class RecipeAppController {
     this.recipeService = recipeService;
   }
 
-  @GetMapping("/search")
-  public String searchRecipe(Model model,
+  @GetMapping("/")
+  public String renderIndexPage(@CookieValue(value = "Bearer", required = false) String token,
+                                Model model) {
+    isLoggedIn = loggedInChecker(token);
+    model.addAttribute("isLoggedIn", isLoggedIn);
+    return "index";
+  }
+
+  @GetMapping("api/recipes/search")
+  public String searchRecipe(@CookieValue(value = "Bearer", required = false) String token,
+                             Model model,
                              @RequestParam(required = false, name = "search") String search) {
+    isLoggedIn = loggedInChecker(token);
+    model.addAttribute("isLoggedIn", isLoggedIn);
     model.addAttribute("recipeList", recipeService.searcher(search));
     return "recipes";
   }
@@ -37,19 +48,22 @@ public class RecipeAppController {
                            Model model) {
     List<Recipe> recipeList = recipeService.returnSortedAllRecipeList();
     isLoggedIn = loggedInChecker(token);
-    model.addAttribute("recipeList", recipeList);
     model.addAttribute("isLoggedIn", isLoggedIn);
+    model.addAttribute("recipeList", recipeList);
     return "recipes";
   }
 
   @GetMapping("/api/recipes/{id}")
-  public String renderRecipeById(Model model,
+  public String renderRecipeById(@CookieValue(value = "Bearer", required = false) String token,
+                                 Model model,
                              @PathVariable(value = "id") int id) {
     Recipe recipe = recipeService.findRecipeById(id);
     model.addAttribute("recipe", recipe);
     ReturnRecipeDTO recipeDTO = recipeService.returnDTOConverter(recipe);
     model.addAttribute("recipeIngredients", recipeDTO.getIngredients());
     model.addAttribute("recipeDirections", recipeDTO.getDirections());
+    isLoggedIn = loggedInChecker(token);
+    model.addAttribute("isLoggedIn", isLoggedIn);
     return "recipe";
   }
 
@@ -61,8 +75,10 @@ public class RecipeAppController {
   }
 
   @GetMapping("/api/addRecipe")
-  public String renderAddRecipePage(Model model) {
-
+  public String renderAddRecipePage(@CookieValue(value = "Bearer", required = false) String token,
+                                    Model model) {
+    isLoggedIn = loggedInChecker(token);
+    model.addAttribute("isLoggedIn", isLoggedIn);
     return "register_recipe";
   }
 
