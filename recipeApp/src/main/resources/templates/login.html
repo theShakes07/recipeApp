@@ -21,6 +21,8 @@
             <input type="password" th:value="${password}" name="password" class="form-control" id="password" placeholder="Password">
         </div>
     </div>
+    <p th:if="${ex}" class="alert alert-danger notification" role="alert"
+       th:text="${ex}"></p>
     <div class="form-group row">
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Sign in</button>

@@ -7,7 +7,7 @@
     <title>Új recept hozzáadása</title>
 </head>
 <body>
-<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar} : ~{fragments/navbar :: navbar}"></div>
+<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
 <form th:action="@{/api/registerRecipe}" method="post" th:object="${newrecipedto}">
     <div class="form-group">
         <label for="name">Recept neve</label>

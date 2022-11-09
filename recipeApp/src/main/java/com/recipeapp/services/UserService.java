@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
-  void saveUser(MyUser user);
+  String saveUser(MyUser user);
 
   MyUser login(LoginRequest loginRequest);
 

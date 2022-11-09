@@ -14,6 +14,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,13 +48,22 @@ public class UserController {
   }
 
   @GetMapping("/api/user/register")
-  public String renderRegisterUser() {
+  public String renderRegisterUser(Model model) {
+    model.addAttribute("user", new MyUser());
     return "register_user";
   }
 
   @PostMapping("/api/user/register")
-  public String registerUser(@Valid @ModelAttribute("user") MyUser user) {
-    userService.saveUser(user);
+  public String registerUser(@Valid @ModelAttribute("user") MyUser user,
+                             BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+      return "register_user";
+    }
+    String existedUsername = userService.saveUser(user);
+    if(existedUsername != null) {
+      model.addAttribute("existedUsername", existedUsername);
+      return "register_user";
+    }
     return "redirect:/api/recipes";
   }
 
@@ -61,28 +72,46 @@ public class UserController {
   public ResponseEntity<?> secretPage(@CookieValue(value = "Bearer") String value) {
     System.out.println(value);
     String name = jwtUtil.extractUsername(value);
-    System.out.println(jwtUtil.extractUsername(value));
+    System.out.println(name);
     System.out.println(jwtUtil.validateToken(value, userService.loadUserByUsername(name)));
     System.out.println("With testname: " + jwtUtil.validateToken(value,
-        userService.loadUserByUsername("d")));
+        userService.loadUserByUsername("admin")));
     return ResponseEntity.ok(201);
   }
 
   @PostMapping("/api/auth")
   public String createToken(@ModelAttribute("loginrequest") LoginRequest loginRequest,
-                            HttpServletResponse resp) throws Exception {
+                            HttpServletResponse resp,
+                            Model model) {
     try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
               loginRequest.getPassword())
       );
     } catch (BadCredentialsException e) {
-      throw new Exception("Incorrect Username or Password", e);
+      model.addAttribute("ex", "Hibás felhasználónév vagy jelszó.");
+      return "login";
     }
     final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
     final String jwt = jwtUtil.generateToken(userDetails);
     resp.addCookie(userService.cookieGenerator(jwt));
     return "redirect:/api/recipes";
   }
+
+//  @GetMapping("navbar_logged")
+//  public String navbar(@CookieValue(value = "Bearer") String token,
+//                        Model model) {
+//    String username = jwtUtil.extractUsername(token);
+//    model.addAttribute("username", username);
+//    return "fragments/navbar_logged";
+//  }
+//
+//  @ModelAttribute("loggedinuser")
+//  public String userName(@CookieValue(value = "Bearer", required = false) String token,
+//                         Model model) {
+//    String username = jwtUtil.extractUsername(token);
+//    model.addAttribute("loggedinuser", username);
+//    return username;
+//  }
 
 }

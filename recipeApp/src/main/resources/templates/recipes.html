@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../static/css/stylesheet.css">
 </head>
 <body>
-<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar} : ~{fragments/navbar :: navbar}"></div>
+<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
 <table class="table table-striped">
     <thead>
     <tr>

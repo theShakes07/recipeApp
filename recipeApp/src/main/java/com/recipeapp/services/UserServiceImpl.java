@@ -1,5 +1,6 @@
 package com.recipeapp.services;
 
+import com.recipeapp.exceptions.types.UsernameAlreadyExistException;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.repositories.UserRepository;
@@ -22,11 +23,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     this.userRepository = userRepository;
   }
 
-  @Override
-  public void saveUser(MyUser user) {
+  /*@Override
+  public String saveUser(MyUser user) {
+    if(userRepository.findMyUsersByUsername(user.getUsername()).isPresent()) {
+      throw new UsernameAlreadyExistException();
+    }
     String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(workload));
     user.setPassword(passwordHash);
     userRepository.save(user);
+    return user.getUsername();
+  }*/
+
+  @Override
+  public String saveUser(MyUser user) {
+    if(!userRepository.findMyUsersByUsername(user.getUsername()).isPresent()) {
+      String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(workload));
+      user.setPassword(passwordHash);
+      userRepository.save(user);
+    }
+    else {
+      return user.getUsername();
+    }
+    return null;
   }
 
   @Override

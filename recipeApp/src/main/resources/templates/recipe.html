@@ -7,7 +7,7 @@
     <title th:text="${recipe.getRecipeName}">Title</title>
 </head>
 <body>
-<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar} : ~{fragments/navbar :: navbar}"></div>
+<div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
 
 <div class="container-fluid name">
     <h3 class="panel_title">Recept neve:</h3>

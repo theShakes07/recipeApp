@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,11 +18,11 @@ public class MyUser implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
-  @NotBlank
+  @NotBlank(message = "Felhasználónév megadása kötelező!")
   String username;
-  @NotBlank
+  @NotBlank(message = "Jelszó megadása kötelető!")
   String password;
-  @NotBlank
+  @NotBlank(message = "E-mail cím megadása kötelező!")
   String email;
 
   public MyUser() {
