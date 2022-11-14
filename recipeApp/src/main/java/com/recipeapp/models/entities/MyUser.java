@@ -19,8 +19,10 @@ public class MyUser implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
   @NotBlank(message = "Felhasználónév megadása kötelező!")
+  @Size(min = 3, message = "Minimum 3 karakter.")
   String username;
   @NotBlank(message = "Jelszó megadása kötelető!")
+  @Size(min = 3, message = "A jelszó hossza legalább 3 karakter.")
   String password;
   @NotBlank(message = "E-mail cím megadása kötelező!")
   String email;

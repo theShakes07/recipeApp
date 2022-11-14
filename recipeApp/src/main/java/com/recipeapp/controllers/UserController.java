@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
+
+  public String loggedUserName;
 
   private AuthenticationManager authenticationManager;
   private JwtUtil jwtUtil;
