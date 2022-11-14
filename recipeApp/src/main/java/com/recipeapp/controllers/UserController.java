@@ -1,5 +1,7 @@
 package com.recipeapp.controllers;
 
+import com.recipeapp.exceptions.types.IncorrectPasswordException;
+import com.recipeapp.models.dtos.ChangeDTO;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.security.JwtUtil;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class UserController {
@@ -63,7 +66,7 @@ public class UserController {
       return "register_user";
     }
     String existedUsername = userService.saveUser(user);
-    if(existedUsername != null) {
+    if (existedUsername != null) {
       model.addAttribute("existedUsername", existedUsername);
       return "register_user";
     }
@@ -101,20 +104,23 @@ public class UserController {
     return "redirect:/api/recipes";
   }
 
-//  @GetMapping("navbar_logged")
-//  public String navbar(@CookieValue(value = "Bearer") String token,
-//                        Model model) {
-//    String username = jwtUtil.extractUsername(token);
-//    model.addAttribute("username", username);
-//    return "fragments/navbar_logged";
-//  }
-//
-//  @ModelAttribute("loggedinuser")
-//  public String userName(@CookieValue(value = "Bearer", required = false) String token,
-//                         Model model) {
-//    String username = jwtUtil.extractUsername(token);
-//    model.addAttribute("loggedinuser", username);
-//    return username;
-//  }
+  @GetMapping("/api/user/profile")
+  public String renderProfilePage(@CookieValue(value = "Bearer") String token) {
+    return "profile";
+  }
+
+  @PostMapping("api/user/profile")
+  public String changeProfileData(@CookieValue(value = "Bearer") String token,
+                                  Model model,
+                                  @ModelAttribute("changedto")ChangeDTO changeDTO) {
+    String username = jwtUtil.extractUsername(token);
+    try {
+      String res = userService.modifyUser(username, changeDTO);
+      model.addAttribute("response", res);
+    } catch (IncorrectPasswordException e) {
+      model.addAttribute("response", e.getMessage());
+    }
+    return "profile";
+  }
 
 }

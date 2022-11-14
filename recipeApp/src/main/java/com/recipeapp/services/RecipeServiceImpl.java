@@ -1,9 +1,11 @@
 package com.recipeapp.services;
 
+import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import com.recipeapp.repositories.RecipeRepository;
+import com.recipeapp.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -16,9 +18,12 @@ import org.springframework.stereotype.Service;
 public class RecipeServiceImpl implements RecipeService {
 
   private RecipeRepository recipeRepository;
+  private UserRepository userRepository;
 
-  public RecipeServiceImpl(RecipeRepository recipeRepository) {
+  public RecipeServiceImpl(RecipeRepository recipeRepository,
+                           UserRepository userRepository) {
     this.recipeRepository = recipeRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -46,8 +51,10 @@ public class RecipeServiceImpl implements RecipeService {
   }
 
   @Override
-  public Recipe addNewRecipe(NewRecipeDTO recipeDTO) {
+  public Recipe addNewRecipe(NewRecipeDTO recipeDTO, String username) {
+    MyUser user = userRepository.findByUsername(username);
     Recipe recipe = recipeConverter(recipeDTO);
+    recipe.setOwnerUser(user);
     recipeRepository.save(recipe);
     return recipe;
   }

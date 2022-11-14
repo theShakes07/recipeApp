@@ -1,6 +1,8 @@
 package com.recipeapp.services;
 
+import com.recipeapp.exceptions.types.IncorrectPasswordException;
 import com.recipeapp.exceptions.types.UsernameAlreadyExistException;
+import com.recipeapp.models.dtos.ChangeDTO;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.repositories.UserRepository;
@@ -59,8 +61,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public void modifyUser(MyUser user) {
-
+  public String modifyUser(String username, ChangeDTO changeDTO) {
+    MyUser user = loadUserByUsername(username);
+    if(!checkPassword(changeDTO.getCurrentPassword(), user.getPassword())) {
+      throw new IncorrectPasswordException();
+    }
+    user = changeDTOConverter(changeDTO, username);
+    userRepository.save(user);
+    return "A változtatás sikeres!";
   }
 
   @Override
@@ -111,6 +119,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
       }
     }
     return bearerCookieRemove;
+  }
+
+  private MyUser changeDTOConverter(ChangeDTO changeDTO, String username) {
+    MyUser user = loadUserByUsername(username);
+    if(changeDTO.getNewPassword() != null && !changeDTO.getNewPassword().equals("")) {
+      String passwordHash = BCrypt.hashpw(changeDTO.getNewPassword(), BCrypt.gensalt(workload));
+      user.setPassword(passwordHash);
+    }
+    else if(changeDTO.getEmail() != null && !changeDTO.getEmail().equals("")) {
+      user.setEmail(changeDTO.getEmail());
+    }
+    return user;
   }
 
 }

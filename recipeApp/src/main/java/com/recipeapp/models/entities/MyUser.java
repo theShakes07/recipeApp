@@ -1,13 +1,18 @@
 package com.recipeapp.models.entities;
 
 import java.util.Collection;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Min;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,8 +31,21 @@ public class MyUser implements UserDetails {
   String password;
   @NotBlank(message = "E-mail cím megadása kötelező!")
   String email;
+  @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.ALL)
+  private List<Recipe> recipes;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "fav_recipe_id", referencedColumnName = "id")
+  private MyUser userFav;
 
   public MyUser() {
+  }
+
+  public MyUser(String username) {
+    this.username = username;
+  }
+
+  public MyUser(Integer id) {
+    this.id = id;
   }
 
   public MyUser(String username, String password, String email) {
@@ -71,6 +89,22 @@ public class MyUser implements UserDetails {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public List<Recipe> getRecipes() {
+    return recipes;
+  }
+
+  public void setRecipes(List<Recipe> recipes) {
+    this.recipes = recipes;
+  }
+
+  public MyUser getUserFav() {
+    return userFav;
+  }
+
+  public void setUserFav(MyUser userFav) {
+    this.userFav = userFav;
   }
 
   @Override

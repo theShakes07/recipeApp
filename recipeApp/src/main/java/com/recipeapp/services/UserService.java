@@ -1,5 +1,6 @@
 package com.recipeapp.services;
 
+import com.recipeapp.models.dtos.ChangeDTO;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
 import javax.servlet.http.Cookie;
@@ -13,7 +14,7 @@ public interface UserService {
 
   MyUser login(LoginRequest loginRequest);
 
-  void modifyUser(MyUser user);
+  String modifyUser(String username, ChangeDTO changeDTO);
 
   void deleteUser(MyUser user);
 

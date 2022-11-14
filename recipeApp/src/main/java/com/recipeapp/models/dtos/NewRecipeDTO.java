@@ -4,11 +4,11 @@ import javax.validation.constraints.NotBlank;
 
 public class NewRecipeDTO {
 
-  @NotBlank
+  @NotBlank(message = "Kötelező nevet megadni.")
   private String name;
-  @NotBlank
+  @NotBlank(message = "Kötelező hozzávalókat megadni.")
   private String ingredient;
-  @NotBlank
+  @NotBlank(message = "Kötelező elkészítési leírást megadni.")
   private String directions;
 
   public NewRecipeDTO() {

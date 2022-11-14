@@ -1,5 +1,6 @@
 package com.recipeapp.exceptions;
 
+import com.recipeapp.exceptions.types.IncorrectPasswordException;
 import com.recipeapp.exceptions.types.UsernameAlreadyExistException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,11 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(UsernameAlreadyExistException.class)
   public String handleUsernameAlreadyExistException(UsernameAlreadyExistException ex) {
+    return ex.getMessage();
+  }
+
+  @ExceptionHandler(IncorrectPasswordException.class)
+  public String handleIncorrectPasswordException(IncorrectPasswordException ex) {
     return ex.getMessage();
   }
 

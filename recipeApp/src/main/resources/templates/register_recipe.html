@@ -8,18 +8,24 @@
 </head>
 <body>
 <div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
-<form th:action="@{/api/registerRecipe}" method="post" th:object="${newrecipedto}">
+<form th:action="@{/api/addRecipe}" method="post" th:object="${newrecipedto}">
     <div class="form-group">
         <label for="name">Recept neve</label>
         <input type="text" th:value="${name}" class="form-control" id="name" name="name">
+         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+           class="alert alert-danger notification" role="alert">Name Error</p>
     </div>
     <div class="form-group">
         <label for="ingredient">Hozzávalók:</label>
         <input type="text" th:value="${ingredient}" class="form-control" id="ingredient" name="ingredient">
+        <p th:if="${#fields.hasErrors('ingredient')}" th:errors="*{ingredient}"
+           class="alert alert-danger notification" role="alert">Ingredient Error</p>
     </div>
     <div class="form-group">
         <label for="directions">Elkészítés:</label>
         <input type="text" th:value="${directions}" class="form-control" id="directions" name="directions">
+        <p th:if="${#fields.hasErrors('directions')}" th:errors="*{directions}"
+           class="alert alert-danger notification" role="alert">Directions Error</p>
 
     </div>
     <input type="submit" value="Küldés">

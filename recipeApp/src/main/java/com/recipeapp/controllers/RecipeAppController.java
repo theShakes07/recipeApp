@@ -1,12 +1,16 @@
 package com.recipeapp.controllers;
 
+import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
+import com.recipeapp.security.JwtUtil;
 import com.recipeapp.services.RecipeService;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,9 +24,11 @@ public class RecipeAppController {
   boolean isLoggedIn = false;
 
   private RecipeService recipeService;
+  private JwtUtil jwtUtil;
 
-  public RecipeAppController(RecipeService recipeService) {
+  public RecipeAppController(RecipeService recipeService, JwtUtil jwtUtil) {
     this.recipeService = recipeService;
+    this.jwtUtil = jwtUtil;
   }
 
   @GetMapping("/")
@@ -62,6 +68,7 @@ public class RecipeAppController {
     ReturnRecipeDTO recipeDTO = recipeService.returnDTOConverter(recipe);
     model.addAttribute("recipeIngredients", recipeDTO.getIngredients());
     model.addAttribute("recipeDirections", recipeDTO.getDirections());
+    model.addAttribute("author", recipe.getOwnerUser().getUsername());
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
     return "recipe";
@@ -79,12 +86,21 @@ public class RecipeAppController {
                                     Model model) {
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
+    model.addAttribute("newrecipedto", new NewRecipeDTO());
     return "register_recipe";
   }
 
-  @PostMapping("/api/registerRecipe")
-  public String addNewRecipe(@ModelAttribute("newrecipedto") NewRecipeDTO recipeDTO) {
-    recipeService.addNewRecipe(recipeDTO);
+  @PostMapping("/api/addRecipe")
+  public String addNewRecipe(@Valid @ModelAttribute("newrecipedto") NewRecipeDTO recipeDTO,
+                             BindingResult bindingResult,
+                             Model model,
+                             @CookieValue(value = "Bearer", required = false) String token) {
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("isLoggedIn", isLoggedIn);
+      return "register_recipe";
+    }
+    String username = jwtUtil.extractUsername(token);
+    recipeService.addNewRecipe(recipeDTO, username);
     return "redirect:/api/recipes";
   }
 

@@ -30,7 +30,7 @@
             </ul>
             <!-- Logged Username -->
             <span class="navbar-text" th:if="${loggedinuser != null}">
-            Bejelentkezve mint, <a href="#" th:text="${loggedinuser}"></a>
+            Bejelentkezve mint, <a href="/api/user/profile" th:text="${loggedinuser}"></a>
             </span>
             <!-- Logout -->
             <a class="btn btn-danger" href="/api/user/logout">Kijelentkezés</a>

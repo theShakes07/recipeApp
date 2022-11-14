@@ -11,7 +11,7 @@ public interface RecipeService {
 
   List<Recipe> returnSortedAllRecipeList();
 
-  Recipe addNewRecipe(NewRecipeDTO recipeDTO);
+  Recipe addNewRecipe(NewRecipeDTO recipeDTO, String username);
 
   void modifyRecipe(Recipe recipe, Integer recipeId);
 
