@@ -23,8 +23,8 @@ public class Recipe {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id", referencedColumnName = "id")
   private MyUser ownerUser;
-  @OneToMany(mappedBy = "userFav" ,cascade = CascadeType.ALL)
-  private List<MyUser> usersFavourites;
+//  @OneToMany(mappedBy = "userFav" ,cascade = CascadeType.ALL)
+//  private List<MyUser> usersFavourites;
 
   public Recipe() {
   }
@@ -82,11 +82,11 @@ public class Recipe {
     this.ownerUser = ownerUser;
   }
 
-  public List<MyUser> getUsersFavourites() {
-    return usersFavourites;
-  }
-
-  public void setUsersFavourites(List<MyUser> usersFavourites) {
-    this.usersFavourites = usersFavourites;
-  }
+//  public List<MyUser> getUsersFavourites() {
+//    return usersFavourites;
+//  }
+//
+//  public void setUsersFavourites(List<MyUser> usersFavourites) {
+//    this.usersFavourites = usersFavourites;
+//  }
 }

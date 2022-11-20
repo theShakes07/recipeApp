@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>RecipeApp</title>
+    <link rel="stylesheet" href="../static/css/stylesheet.css">
+</head>
+<body>
+<div th:replace="~{fragments/navbar_logged :: navbar_logged}"></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Kedvenc recept neve</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="recipe : ${recipeList}">
+        <td>
+            <a th:href="@{'/api/recipes/' + ${recipe.getId()}}" th:text="${recipe.getRecipeName()}"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -104,6 +104,22 @@ public class RecipeAppController {
     return "redirect:/api/recipes";
   }
 
+  @GetMapping("/api/favourites")
+  public String renderFavourites(Model model,
+                                 @CookieValue(value = "Bearer") String token) {
+    List<Recipe> recipeList = recipeService.returnFavouriteRecipes(jwtUtil.extractUsername(token));
+    model.addAttribute("recipeList", recipeList);
+    return "favourites";
+  }
+
+  @PostMapping("/api/recipes/{id}")
+  public String addRecipeToFavourites(@RequestParam int id,
+                                      @CookieValue(value = "Bearer", required = false) String token) {
+    recipeService.addRecipeToFavourites(jwtUtil.extractUsername(token), id);
+    System.out.println(id);
+    return "redirect:/api/recipes/" + id;
+  }
+
   private boolean loggedInChecker(String token) {
     return isLoggedIn = token != null;
   }

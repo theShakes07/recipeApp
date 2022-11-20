@@ -3,6 +3,7 @@ package com.recipeapp.models.entities;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,9 +34,11 @@ public class MyUser implements UserDetails {
   String email;
   @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.ALL)
   private List<Recipe> recipes;
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "fav_recipe_id", referencedColumnName = "id")
-  private MyUser userFav;
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "fav_recipe_id", referencedColumnName = "id")
+//  private Recipe userFav;
+  @Column(name = "fav_recipes")
+  private String favRecipes;
 
   public MyUser() {
   }
@@ -99,12 +102,12 @@ public class MyUser implements UserDetails {
     this.recipes = recipes;
   }
 
-  public MyUser getUserFav() {
-    return userFav;
+  public String getFavRecipes() {
+    return favRecipes;
   }
 
-  public void setUserFav(MyUser userFav) {
-    this.userFav = userFav;
+  public void setFavRecipes(String favRecipes) {
+    this.favRecipes = favRecipes;
   }
 
   @Override

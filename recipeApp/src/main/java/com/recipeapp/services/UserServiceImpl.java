@@ -5,7 +5,9 @@ import com.recipeapp.exceptions.types.UsernameAlreadyExistException;
 import com.recipeapp.models.dtos.ChangeDTO;
 import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
+import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.repositories.UserRepository;
+import java.util.ArrayList;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     if(!userRepository.findMyUsersByUsername(user.getUsername()).isPresent()) {
       String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(workload));
       user.setPassword(passwordHash);
+      user.setFavRecipes(",");
       userRepository.save(user);
     }
     else {

@@ -52,9 +52,8 @@ public class RecipeServiceImpl implements RecipeService {
 
   @Override
   public Recipe addNewRecipe(NewRecipeDTO recipeDTO, String username) {
-    MyUser user = userRepository.findByUsername(username);
     Recipe recipe = recipeConverter(recipeDTO);
-    recipe.setOwnerUser(user);
+    recipe.setOwnerUser(userRepository.findByUsername(username));
     recipeRepository.save(recipe);
     return recipe;
   }
@@ -70,11 +69,53 @@ public class RecipeServiceImpl implements RecipeService {
   }
 
   @Override
-  public List<Recipe> searcher(String text) {
-    if(text == null || text.trim().isEmpty()) {
-      return findAllRecipe();
+  public void addRecipeToFavourites(String username, int recipeId) {
+    MyUser user = userRepository.findByUsername(username);
+    String recipeList = user.getFavRecipes();
+    List<String> rec = new ArrayList<String>(Arrays.asList(recipeList.trim().split(",")));
+    List<String> checkerList = favRecipeChecker(rec, recipeId);
+    if(checkerList.size() != 0) {
+      rec.removeAll(checkerList);
+    } else {
+      rec.add(String.valueOf(recipeId));
     }
-    else {
+    user.setFavRecipes(favRecipeListWriter(rec));
+    userRepository.save(user);
+  }
+
+  private List<String> favRecipeChecker(List<String> recipeList, int recipeId) {
+    List<String> removedStringList = new ArrayList<>();
+    for (String s : recipeList) {
+      if (Integer.parseInt(s) == recipeId) {
+        removedStringList.add(s);
+      }
+    }
+    return removedStringList;
+  }
+
+  private String favRecipeListWriter(List<String> list) {
+    StringBuilder recList = new StringBuilder();
+    for (String s : list) {
+      recList.append(s).append(",");
+    }
+    if(recList.length() == 0) {
+      recList.append(",");
+    }
+    return recList.toString();
+  }
+
+
+  @Override
+  public List<Recipe> returnFavouriteRecipes(String username) {
+    MyUser user = userRepository.findByUsername(username);
+    return favRecipesConverter(user.getFavRecipes());
+  }
+
+  @Override
+  public List<Recipe> searcher(String text) {
+    if (text == null || text.trim().isEmpty()) {
+      return findAllRecipe();
+    } else {
       return findAllRecipe().stream()
           .filter(recipe -> recipe.getRecipeName().toLowerCase().contains(text.toLowerCase()))
           .collect(Collectors.toList());
@@ -99,7 +140,7 @@ public class RecipeServiceImpl implements RecipeService {
 
   private List<Integer> getAllRecipeId(List<Recipe> recipeList) {
     List<Integer> recipeIdList = new ArrayList<>();
-    for(Recipe r : recipeList) {
+    for (Recipe r : recipeList) {
       recipeIdList.add(r.getId());
     }
     return recipeIdList;
@@ -114,4 +155,15 @@ public class RecipeServiceImpl implements RecipeService {
     return recipeDTO;
   }
 
+  private List<Recipe> favRecipesConverter(String recipes) {
+    List<Recipe> recipeList = new ArrayList<>();
+    String[] recipeIds = recipes.trim().split(",");
+    for (String id : recipeIds) {
+      recipeList.add(recipeRepository.findById(Integer.parseInt(id)));
+    }
+    return recipeList;
+  }
+
 }
+
+

@@ -11,11 +11,15 @@ public interface RecipeService {
 
   List<Recipe> returnSortedAllRecipeList();
 
+  List<Recipe> returnFavouriteRecipes(String username);
+
   Recipe addNewRecipe(NewRecipeDTO recipeDTO, String username);
 
   void modifyRecipe(Recipe recipe, Integer recipeId);
 
   void deleteRecipe(Integer recipeId);
+
+  void addRecipeToFavourites(String username, int recipeId);
 
   Recipe findRecipeById(int id);
 
