@@ -41,5 +41,14 @@
     <button class="btn btn-outline-success" type="submit" th:text="${recipe.getId()}">Fav</button>
 </form>
 
+<div th:if="${isOwner}">
+    <a th:href="@{'/api/recipes/edit/' + ${recipe.getId()}}">Szerkesztés</a>
+</div>
+<div th:if="${isOwner}">
+    <form th:action="@{/api/recipes/delete(id=${recipe.getId()})}" method="post">
+    <input type="submit" value="Törlés">
+    </form>
+</div>
+
 </body>
 </html>

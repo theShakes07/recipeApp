@@ -59,13 +59,17 @@ public class RecipeServiceImpl implements RecipeService {
   }
 
   @Override
-  public void modifyRecipe(Recipe recipe, Integer recipeId) {
-
+  public void modifyRecipe(NewRecipeDTO recipeDTO, Integer recipeId) {
+    Recipe recipe = findRecipeById(recipeId);
+    recipe.setRecipeName(recipeDTO.getName());
+    recipe.setIngredient(recipeDTO.getIngredient());
+    recipe.setDirections(recipeDTO.getDirections());
+    recipeRepository.save(recipe);
   }
 
   @Override
   public void deleteRecipe(Integer recipeId) {
-
+    recipeRepository.deleteById(recipeId);
   }
 
   @Override

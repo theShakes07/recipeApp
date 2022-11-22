@@ -15,7 +15,7 @@ public interface RecipeService {
 
   Recipe addNewRecipe(NewRecipeDTO recipeDTO, String username);
 
-  void modifyRecipe(Recipe recipe, Integer recipeId);
+  void modifyRecipe(NewRecipeDTO recipeDTO, Integer recipeId);
 
   void deleteRecipe(Integer recipeId);
 

@@ -7,6 +7,7 @@ import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import com.recipeapp.security.JwtUtil;
 import com.recipeapp.services.RecipeService;
 import java.util.List;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RecipeAppController {
 
-  boolean isLoggedIn = false;
+  private boolean isLoggedIn = false;
+  private boolean isOwner = false;
 
   private RecipeService recipeService;
   private JwtUtil jwtUtil;
@@ -71,6 +73,8 @@ public class RecipeAppController {
     model.addAttribute("author", recipe.getOwnerUser().getUsername());
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
+    isOwner = ownerChecker(token, id);
+    model.addAttribute("isOwner", isOwner);
     return "recipe";
   }
 
@@ -95,8 +99,8 @@ public class RecipeAppController {
                              BindingResult bindingResult,
                              Model model,
                              @CookieValue(value = "Bearer", required = false) String token) {
+    model.addAttribute("isLoggedIn", isLoggedIn);
     if (bindingResult.hasErrors()) {
-      model.addAttribute("isLoggedIn", isLoggedIn);
       return "register_recipe";
     }
     String username = jwtUtil.extractUsername(token);
@@ -112,7 +116,7 @@ public class RecipeAppController {
     return "favourites";
   }
 
-  @PostMapping("/api/recipes/{id}")
+  @PostMapping("/api/recipes/fav")
   public String addRecipeToFavourites(@RequestParam int id,
                                       @CookieValue(value = "Bearer", required = false) String token) {
     recipeService.addRecipeToFavourites(jwtUtil.extractUsername(token), id);
@@ -120,8 +124,48 @@ public class RecipeAppController {
     return "redirect:/api/recipes/" + id;
   }
 
+  @GetMapping("api/recipes/edit/{id}")
+  public String renderModifyRecipePage(@PathVariable(value = "id") int id,
+                                       Model model) {
+    Recipe recipe = recipeService.findRecipeById(id);
+    model.addAttribute("newrecipedto", new NewRecipeDTO());
+    model.addAttribute("recipe", recipe);
+    model.addAttribute("name", recipe.getRecipeName());
+    model.addAttribute("ingredient", recipe.getIngredient());
+    model.addAttribute("directions", recipe.getDirections());
+    return "recipe_edit";
+  }
+
+  @PostMapping("api/recipes/edit")
+  public String modifyRecipe(@RequestParam int id,
+                             @Valid @ModelAttribute("newrecipedto") NewRecipeDTO recipeDTO,
+                             BindingResult bindingResult,
+                             Model model,
+                             @CookieValue(value = "Bearer", required = false) String token) {
+    model.addAttribute("isLoggedIn", isLoggedIn);
+    if (bindingResult.hasErrors()) {
+      return "recipe_edit";
+    }
+    recipeService.modifyRecipe(recipeDTO, id);
+    return "redirect:/api/recipes/" + id;
+  }
+
+  @PostMapping("api/recipes/delete")
+  public String deleteRecipe(@RequestParam int id,
+                             @CookieValue(value = "Bearer") String token) {
+    if(ownerChecker(token, id)) {
+      recipeService.deleteRecipe(id);
+    }
+    return "redirect:/api/recipes";
+  }
+
   private boolean loggedInChecker(String token) {
     return isLoggedIn = token != null;
+  }
+
+  private boolean ownerChecker(String token, int recipeId) {
+    return jwtUtil.extractUsername(token)
+        .equals(recipeService.findRecipeById(recipeId).getOwnerUser().getUsername());
   }
 
 }
