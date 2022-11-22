@@ -64,7 +64,7 @@ public class RecipeAppController {
   @GetMapping("/api/recipes/{id}")
   public String renderRecipeById(@CookieValue(value = "Bearer", required = false) String token,
                                  Model model,
-                             @PathVariable(value = "id") int id) {
+                                 @PathVariable(value = "id") int id) {
     Recipe recipe = recipeService.findRecipeById(id);
     model.addAttribute("recipe", recipe);
     ReturnRecipeDTO recipeDTO = recipeService.returnDTOConverter(recipe);
@@ -73,8 +73,10 @@ public class RecipeAppController {
     model.addAttribute("author", recipe.getOwnerUser().getUsername());
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
-    isOwner = ownerChecker(token, id);
-    model.addAttribute("isOwner", isOwner);
+    if(isLoggedIn) {
+      isOwner = ownerChecker(token, id);
+      model.addAttribute("isOwner", isOwner);
+    }
     return "recipe";
   }
 
