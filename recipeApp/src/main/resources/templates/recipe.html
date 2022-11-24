@@ -37,9 +37,11 @@
     <div th:text="${author}"></div>
 </div>
 
-<form method="post" th:action="@{/api/recipes/fav(id=${recipe.getId()})}">
-    <button class="btn btn-outline-success" type="submit" th:text="${recipe.getId()}">Fav</button>
-</form>
+<div class="add-favourite" th:if="${isLoggedIn}">
+    <form method="post" th:action="@{/api/recipes/fav(id=${recipe.getId()})}">
+        <button class="btn btn-outline-success" type="submit" th:text="${recipe.getId()}">Fav</button>
+    </form>
+</div>
 
 <div th:if="${isOwner}">
     <a th:href="@{'/api/recipes/edit/' + ${recipe.getId()}}">Szerkesztés</a>
