@@ -24,6 +24,7 @@ public class RecipeAppController {
 
   private boolean isLoggedIn = false;
   private boolean isOwner = false;
+  private boolean isFav = false;
 
   private RecipeService recipeService;
   private JwtUtil jwtUtil;
@@ -76,6 +77,8 @@ public class RecipeAppController {
     if(isLoggedIn) {
       isOwner = ownerChecker(token, id);
       model.addAttribute("isOwner", isOwner);
+      isFav = recipeService.favRecipeChecker(jwtUtil.extractUsername(token), id);
+      model.addAttribute("isFav", isFav);
     }
     return "recipe";
   }

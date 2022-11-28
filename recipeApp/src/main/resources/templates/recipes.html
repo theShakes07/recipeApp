@@ -6,23 +6,25 @@
 <head>
     <meta charset="UTF-8">
     <title>RecipeApp</title>
-
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon.png}">
 </head>
 <body>
 <div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Recept neve</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="recipe : ${recipeList}">
-        <td>
-            <a th:href="@{'/api/recipes/' + ${recipe.getId()}}" th:text="${recipe.getRecipeName()}"></a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="table-container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Recept neve</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="recipe : ${recipeList}">
+            <td class="recipe-elements">
+                <a th:href="@{'/api/recipes/' + ${recipe.getId()}}" th:text="${recipe.getRecipeName()}"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -25,22 +25,21 @@
                     <a class="nav-link active" aria-current="page" href="/api/addRecipe">Új recept</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/api/secret">Secret</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/api/favourites">Kedvencek</a>
                 </li>
             </ul>
             <!-- Logged Username -->
             <span class="navbar-text" th:if="${loggedinuser != null}">
-            Bejelentkezve mint, <a href="/api/user/profile" th:text="${loggedinuser}"></a>
+            Bejelentkezve, mint <a href="/api/user/profile" th:text="${loggedinuser}"></a>
             </span>
             <!-- Logout -->
-            <a class="btn btn-danger" href="/api/user/logout">Kijelentkezés</a>
+            <div class="logout-button">
+                <a class="btn btn-danger" href="/api/user/logout">Kijelentkezés</a>
+            </div>
             <!-- Search -->
             <form class="d-flex" role="search" th:action="@{/api/recipes/search}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <input class="form-control me-2" type="search" placeholder="Recept keresése" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Keresés</button>
             </form>
         </div>
     </div>

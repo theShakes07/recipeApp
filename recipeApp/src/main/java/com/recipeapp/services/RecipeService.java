@@ -29,4 +29,6 @@ public interface RecipeService {
 
   ReturnRecipeDTO returnDTOConverter(Recipe recipe);
 
+  boolean favRecipeChecker(String username, int recipeId);
+
 }

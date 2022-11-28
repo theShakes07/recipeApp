@@ -69,6 +69,7 @@ public class RecipeServiceImpl implements RecipeService {
 
   @Override
   public void deleteRecipe(Integer recipeId) {
+    removeFromFavRecipes(recipeId);
     recipeRepository.deleteById(recipeId);
   }
 
@@ -166,6 +167,29 @@ public class RecipeServiceImpl implements RecipeService {
       recipeList.add(recipeRepository.findById(Integer.parseInt(id)));
     }
     return recipeList;
+  }
+
+  @Override
+  public boolean favRecipeChecker(String username, int recipeId) {
+    List<Recipe> favRecipesList = returnFavouriteRecipes(username);
+    for(Recipe rec : favRecipesList) {
+      if(rec.getId().equals(recipeId) && rec.getId() != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void removeFromFavRecipes(int recipeId) {
+    String id = String.valueOf(recipeId);
+    List<MyUser> userList = userRepository.findAll();
+    for(MyUser user : userList) {
+      String favRecipes = user.getFavRecipes();
+      if(favRecipes.contains(String.valueOf(recipeId))) {
+        favRecipes = favRecipes.replaceAll(id, "");
+        user.setFavRecipes(favRecipes);
+      }
+    }
   }
 
 }
