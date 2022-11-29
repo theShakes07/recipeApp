@@ -1,5 +1,6 @@
 package com.recipeapp.models.dtos;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 public class NewRecipeDTO {

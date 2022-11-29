@@ -39,7 +39,7 @@ public class RecipeAppController {
                                 Model model) {
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
-    return "index";
+    return "redirect:/api/recipes";
   }
 
   @GetMapping("api/recipes/search")

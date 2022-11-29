@@ -3,6 +3,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}">
 <head>
     <meta charset="UTF-8">
     <title>Új recept hozzáadása</title>
@@ -12,25 +13,27 @@
 <div th:replace="${isLoggedIn} ? ~{fragments/navbar_logged :: navbar_logged} : ~{fragments/navbar :: navbar}"></div>
 <form th:action="@{/api/addRecipe}" method="post" th:object="${newrecipedto}">
     <div class="form-group">
-        <label for="name">Recept neve</label>
+        <label for="name" class="label-title">Recept neve:</label>
         <input type="text" th:value="${name}" class="form-control" id="name" name="name">
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
            class="alert alert-danger notification" role="alert">Name Error</p>
     </div>
     <div class="form-group">
-        <label for="ingredient">Hozzávalók:</label>
-        <input type="text" th:value="${ingredient}" class="form-control" id="ingredient" name="ingredient">
+        <label for="ingredient" class="label-title">Hozzávalók:</label>
+        <input type="text" th:value="${ingredient}" class="form-control" id="ingredient" name="ingredient"
+               placeholder="A hozzávalókat / jellel kell elválasztani.">
         <p th:if="${#fields.hasErrors('ingredient')}" th:errors="*{ingredient}"
            class="alert alert-danger notification" role="alert">Ingredient Error</p>
     </div>
     <div class="form-group">
-        <label for="directions">Elkészítés:</label>
-        <input type="text" th:value="${directions}" class="form-control" id="directions" name="directions">
+        <label for="directions" class="label-title">Elkészítés:</label>
+        <input type="text" th:value="${directions}" class="form-control" id="directions" name="directions"
+               placeholder="Az elkészítés lépéseit / jellel kell elválasztani.">
         <p th:if="${#fields.hasErrors('directions')}" th:errors="*{directions}"
            class="alert alert-danger notification" role="alert">Directions Error</p>
 
     </div>
-    <input type="submit" value="Küldés">
+    <input class="submit-button bton send-button" type="submit" value="Küldés">
 </form>
 
 </body>

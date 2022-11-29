@@ -48,10 +48,15 @@ body {
     width: 80%;
 }
 
+label {
+    margin: 0 0 5px 0;
+}
+
 .recipe-elements a {
     color: darkblue;
 }
 
+/*NAVBAR*/
 .navbar-text {
     padding-right: .5rem;
 }
@@ -59,6 +64,55 @@ body {
 .logout-button {
     padding-right: 0.5rem;
 }
+
+.bton {
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 0 10px;
+    width: 200px;
+    padding: 10px 0;
+    transition: 0.4s;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    text-decoration: none;
+}
+
+.login {
+    color: black;
+    background-color: white;
+}
+
+.login:hover {
+    color: white;
+    background-color: rgb(255, 102, 102);
+}
+
+.reg {
+    color: white;
+    background-color: rgb(255, 102, 102);
+}
+
+.reg:hover {
+    color: white;
+}
+
+.login-button {
+    margin: 20px 0 0 300px;
+}
+
+.send-button {
+    color: white;
+    background-color: rgb(255, 102, 102);
+}
+
+.send-button:hover {
+    box-shadow: 0 0 30px rgba(255, 102, 102, 0.6);
+}
+
 
 /*RECIPE PAGE*/
 
@@ -68,10 +122,10 @@ body {
     box-shadow: 0.25em 0.25em 0.75em rgba(0, 0, 0, .25),
                 0.125em 0.125em 0.25em rgba(0, 0, 0, .15);
     background-color: white;
-    background-image: url("../img/backgroundpic/kitchenware.png");
-    background-repeat: no-repeat;
-    background-position: right bottom;
-    background-size: 15%;
+    background-image: url("../img/backgroundpic/kitchenware.png"), url("../img/backgroundpic/pin.png");
+    background-repeat: no-repeat, no-repeat;
+    background-position: right bottom, top center;
+    background-size: 15%, 5%;
 }
 
 .panel_title {
@@ -79,7 +133,7 @@ body {
 }
 
 .menu-buttons {
-    padding: 40px 0 40px 40px;
+    padding: 40px 0 40px 110px;
     display: grid;
     grid-auto-flow: column;
 }
@@ -87,6 +141,10 @@ body {
 .fav-button {
     border: none;
     background: none;
+}
+
+.fav-button:hover {
+    color: red;
 }
 
 .edit-button {
@@ -97,3 +155,49 @@ body {
     border: none;
     background: none;
 }
+
+.delete-button:hover {
+    color: dodgerblue;
+}
+
+/*ADD NEW RECIPE PAGE*/
+
+.form-group {
+    width: 700px;
+    text-align: center;
+    margin: 10px 500px;
+}
+
+.label-title {
+    margin: 10px 0 5px 0;
+    font-size: 1.1rem;
+}
+
+#ingredient, #directions {
+    box-sizing: border-box;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+#name {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+.submit-button {
+    margin: 30px 0 0 750px;
+    /*background-color: white;
+    color: black;
+    border: 2px solid grey;
+    transition-duration: 0.4s;
+    border-radius: 4px;*/
+}
+
+/*
+.submit-button:hover {
+    background-color: grey;
+    color: white;
+}*/

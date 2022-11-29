@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}">
 <head>
     <meta charset="UTF-8">
     <title>Profil</title>
@@ -13,6 +14,8 @@
     <div class="form-group">
         <label for="currentPassword">Jelenlegi jelszó:</label>
         <input type="password" th:value="${currentPassword}" class="form-control" id="currentPassword" name="currentPassword">
+        <p th:if="${response != null}" th:text="${response}"
+           class="alert alert-danger notification" role="alert"></p>
     </div>
     <div class="form-group">
         <label for="newPassword">Új jelszó:</label>
@@ -22,9 +25,7 @@
         <label for="email">Új e-mail cím:</label>
         <input type="email" th:value="${email}" class="form-control" id="email" name="email">
     </div>
-    <p th:if="${response != null}" th:text="${response}"
-           class="alert alert-danger notification" role="alert"></p>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="bton send-button submit-button">Küldés</button>
 </form>
 </body>
 </html>

@@ -22,11 +22,11 @@
                     <a class="nav-link active" aria-current="page" href="/api/randomRecipe">Véletlenszerű recept</a>
                 </li>
             </ul>
-            <a class="btn btn-primary" href="/api/user/login">Belépés</a>
-            <a class="btn btn-danger" href="/api/user/register">Regisztráció</a>
+            <a class="bton login" href="/api/user/login">Belépés</a>
+            <a class="bton reg" href="/api/user/register">Regisztráció</a>
             <form class="d-flex" role="search" th:action="@{/api/recipes/search}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <input class="form-control me-2" type="search" placeholder="Recept keresés" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Keresés</button>
             </form>
         </div>
     </div>

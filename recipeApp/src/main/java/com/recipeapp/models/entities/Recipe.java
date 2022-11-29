@@ -1,15 +1,13 @@
 package com.recipeapp.models.entities;
 
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity(name = "recipes")
 public class Recipe {
@@ -18,13 +16,13 @@ public class Recipe {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String recipeName;
+  @Lob
   private String ingredient;
+  @Lob
   private String directions;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id", referencedColumnName = "id")
   private MyUser ownerUser;
-//  @OneToMany(mappedBy = "userFav" ,cascade = CascadeType.ALL)
-//  private List<MyUser> usersFavourites;
 
   public Recipe() {
   }
@@ -82,11 +80,4 @@ public class Recipe {
     this.ownerUser = ownerUser;
   }
 
-//  public List<MyUser> getUsersFavourites() {
-//    return usersFavourites;
-//  }
-//
-//  public void setUsersFavourites(List<MyUser> usersFavourites) {
-//    this.usersFavourites = usersFavourites;
-//  }
 }
