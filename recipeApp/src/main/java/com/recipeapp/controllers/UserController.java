@@ -9,7 +9,6 @@ import com.recipeapp.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-  public String loggedUserName;
-
   private AuthenticationManager authenticationManager;
   private JwtUtil jwtUtil;
   private UserService userService;
@@ -37,17 +34,6 @@ public class UserController {
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
     this.userService = userService;
-  }
-
-  @GetMapping("/api/user/login")
-  public String renderLoginPage() {
-    return "login";
-  }
-
-  @GetMapping("/api/user/logout")
-  public String logout(HttpServletRequest request, HttpServletResponse response) {
-    response.addCookie(userService.logout(request));
-    return "redirect:/api/recipes";
   }
 
   @GetMapping("/api/user/register")
@@ -70,16 +56,9 @@ public class UserController {
     return "redirect:/api/recipes";
   }
 
-  // TODO: just for test, delete later
-  @GetMapping("/api/secret")
-  public ResponseEntity<?> secretPage(@CookieValue(value = "Bearer") String value) {
-    System.out.println(value);
-    String name = jwtUtil.extractUsername(value);
-    System.out.println(name);
-    System.out.println(jwtUtil.validateToken(value, userService.loadUserByUsername(name)));
-    System.out.println("With testname: " + jwtUtil.validateToken(value,
-        userService.loadUserByUsername("admin")));
-    return ResponseEntity.ok(201);
+  @GetMapping("/api/user/login")
+  public String renderLoginPage() {
+    return "login";
   }
 
   @PostMapping("/api/auth")
@@ -101,15 +80,21 @@ public class UserController {
     return "redirect:/api/recipes";
   }
 
+  @GetMapping("/api/user/logout")
+  public String logout(HttpServletRequest request, HttpServletResponse response) {
+    response.addCookie(userService.logout(request));
+    return "redirect:/api/recipes";
+  }
+
   @GetMapping("/api/user/profile")
-  public String renderProfilePage(@CookieValue(value = "Bearer") String token) {
+  public String renderProfilePage() {
     return "profile";
   }
 
   @PostMapping("api/user/profile")
   public String changeProfileData(@CookieValue(value = "Bearer") String token,
                                   Model model,
-                                  @ModelAttribute("changedto")ChangeDTO changeDTO) {
+                                  @ModelAttribute("changedto") ChangeDTO changeDTO) {
     String username = jwtUtil.extractUsername(token);
     try {
       String res = userService.modifyUser(username, changeDTO);

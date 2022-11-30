@@ -109,7 +109,6 @@ public class RecipeServiceImpl implements RecipeService {
     return recList.toString();
   }
 
-
   @Override
   public List<Recipe> returnFavouriteRecipes(String username) {
     MyUser user = userRepository.findByUsername(username);
@@ -193,5 +192,3 @@ public class RecipeServiceImpl implements RecipeService {
   }
 
 }
-
-

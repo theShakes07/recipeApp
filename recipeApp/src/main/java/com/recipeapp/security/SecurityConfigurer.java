@@ -1,8 +1,6 @@
 package com.recipeapp.security;
 
 import com.recipeapp.services.UserServiceImpl;
-import org.hibernate.bytecode.enhance.internal.tracker.NoopCollectionTracker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
   public static final String[] PRIVATE_ENDPOINTS = {
-      "/api/secret2",
+      "/api/secret",
   };
 
   private UserServiceImpl userService;
@@ -50,4 +48,5 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception{
     return super.authenticationManagerBean();
   }
+
 }

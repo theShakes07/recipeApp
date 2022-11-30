@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}">
 <head>
@@ -19,13 +20,15 @@
     </div>
     <div class="form-group">
         <label for="ingredient">Hozzávalók:</label>
-        <input type="text" th:value="${ingredient}" class="form-control" id="ingredient" name="ingredient" th:preload="${ingredient}" required>
+        <input type="text" th:value="${ingredient}" class="form-control" id="ingredient" name="ingredient"
+               th:preload="${ingredient}" required>
         <p th:if="${#fields.hasErrors('ingredient')}" th:errors="*{ingredient}"
            class="alert alert-danger notification" role="alert">Ingredient Error</p>
     </div>
     <div class="form-group">
         <label for="directions">Elkészítés:</label>
-        <input type="text" th:value="${directions}" class="form-control" id="directions" name="directions" th:preload="${directions}" required>
+        <input type="text" th:value="${directions}" class="form-control" id="directions" name="directions"
+               th:preload="${directions}" required>
         <p th:if="${#fields.hasErrors('directions')}" th:errors="*{directions}"
            class="alert alert-danger notification" role="alert">Directions Error</p>
 

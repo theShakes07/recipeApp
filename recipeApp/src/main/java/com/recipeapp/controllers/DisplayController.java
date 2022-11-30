@@ -18,8 +18,8 @@ public class DisplayController extends ResponseEntityExceptionHandler {
 
   @ModelAttribute("loggedinuser")
   public String getLoggedUserName(@CookieValue(value = "Bearer", required = false) String token,
-                         Model model) {
-    if(token == null) {
+                                  Model model) {
+    if (token == null) {
       return "navbar";
     }
     String username = jwtUtil.extractUsername(token);

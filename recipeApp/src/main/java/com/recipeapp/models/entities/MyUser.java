@@ -5,14 +5,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,9 +30,6 @@ public class MyUser implements UserDetails {
   String email;
   @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.ALL)
   private List<Recipe> recipes;
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "fav_recipe_id", referencedColumnName = "id")
-//  private Recipe userFav;
   @Column(name = "fav_recipes")
   private String favRecipes;
 

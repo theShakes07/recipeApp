@@ -1,16 +1,11 @@
 package com.recipeapp.services;
 
 import com.recipeapp.exceptions.types.IncorrectPasswordException;
-import com.recipeapp.exceptions.types.UsernameAlreadyExistException;
 import com.recipeapp.models.dtos.ChangeDTO;
-import com.recipeapp.models.dtos.login.LoginRequest;
 import com.recipeapp.models.entities.MyUser;
-import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.repositories.UserRepository;
-import java.util.ArrayList;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -27,17 +22,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     this.userRepository = userRepository;
   }
 
-  /*@Override
-  public String saveUser(MyUser user) {
-    if(userRepository.findMyUsersByUsername(user.getUsername()).isPresent()) {
-      throw new UsernameAlreadyExistException();
-    }
-    String passwordHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(workload));
-    user.setPassword(passwordHash);
-    userRepository.save(user);
-    return user.getUsername();
-  }*/
-
   @Override
   public String saveUser(MyUser user) {
     if(!userRepository.findMyUsersByUsername(user.getUsername()).isPresent()) {
@@ -50,17 +34,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
       return user.getUsername();
     }
     return null;
-  }
-
-  @Override
-  public MyUser login(LoginRequest loginRequest) {
-    MyUser user = loadUserByUsername(loginRequest.getUsername());
-    if (user == null || !checkPassword(loginRequest.getPassword(), user.getPassword())) {
-      throw new RuntimeException("Bad password");
-    } else {
-      System.out.println("Password OK!");
-      return user;
-    }
   }
 
   @Override
@@ -83,7 +56,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   public MyUser loadUserByUsername(String username) throws UsernameNotFoundException {
     MyUser user = this.userRepository.findByUsername(username);
     if (user == null) {
-      System.out.println("User not found.");
       throw new UsernameNotFoundException("User not found!");
     }
     return user;

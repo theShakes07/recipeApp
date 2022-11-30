@@ -1,13 +1,11 @@
 package com.recipeapp.controllers;
 
-import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
 import com.recipeapp.security.JwtUtil;
 import com.recipeapp.services.RecipeService;
 import java.util.List;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RecipeAppController {
 
   private boolean isLoggedIn = false;
-  private boolean isOwner = false;
-  private boolean isFav = false;
 
   private RecipeService recipeService;
   private JwtUtil jwtUtil;
@@ -74,10 +70,10 @@ public class RecipeAppController {
     model.addAttribute("author", recipe.getOwnerUser().getUsername());
     isLoggedIn = loggedInChecker(token);
     model.addAttribute("isLoggedIn", isLoggedIn);
-    if(isLoggedIn) {
-      isOwner = ownerChecker(token, id);
+    if (isLoggedIn) {
+      boolean isOwner = ownerChecker(token, id);
       model.addAttribute("isOwner", isOwner);
-      isFav = recipeService.favRecipeChecker(jwtUtil.extractUsername(token), id);
+      boolean isFav = recipeService.favRecipeChecker(jwtUtil.extractUsername(token), id);
       model.addAttribute("isFav", isFav);
     }
     return "recipe";
@@ -86,7 +82,7 @@ public class RecipeAppController {
   @GetMapping("/api/randomRecipe")
   public String returnRandomRecipe() {
     Recipe recipe = recipeService.randomRecipe();
-    int randomRecipeId= recipe.getId();
+    int randomRecipeId = recipe.getId();
     return "redirect:/api/recipes/" + randomRecipeId;
   }
 
@@ -123,7 +119,8 @@ public class RecipeAppController {
 
   @PostMapping("/api/recipes/fav")
   public String addRecipeToFavourites(@RequestParam int id,
-                                      @CookieValue(value = "Bearer", required = false) String token) {
+                                      @CookieValue(value = "Bearer", required = false)
+                                          String token) {
     recipeService.addRecipeToFavourites(jwtUtil.extractUsername(token), id);
     System.out.println(id);
     return "redirect:/api/recipes/" + id;
@@ -158,7 +155,7 @@ public class RecipeAppController {
   @PostMapping("api/recipes/delete")
   public String deleteRecipe(@RequestParam int id,
                              @CookieValue(value = "Bearer") String token) {
-    if(ownerChecker(token, id)) {
+    if (ownerChecker(token, id)) {
       recipeService.deleteRecipe(id);
     }
     return "redirect:/api/recipes";

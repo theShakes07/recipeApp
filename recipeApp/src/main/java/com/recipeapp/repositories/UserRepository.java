@@ -16,4 +16,5 @@ public interface UserRepository extends CrudRepository<MyUser, Integer> {
   Optional<MyUser> findMyUsersByUsername(String username);
 
   MyUser findById(int id);
+
 }

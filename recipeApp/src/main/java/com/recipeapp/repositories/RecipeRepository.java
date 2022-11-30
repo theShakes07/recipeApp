@@ -9,4 +9,5 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
   List<Recipe> findAll();
 
   Recipe findById(int id);
+
 }
