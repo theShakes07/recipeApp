@@ -11,7 +11,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -79,7 +81,7 @@ public class RecipeServiceImpl implements RecipeService {
     String recipeList = user.getFavRecipes();
     List<String> rec = new ArrayList<String>(Arrays.asList(recipeList.trim().split(",")));
     List<String> checkerList = favRecipeChecker(rec, recipeId);
-    if(checkerList.size() != 0) {
+    if (checkerList.size() != 0) {
       rec.removeAll(checkerList);
     } else {
       rec.add(String.valueOf(recipeId));
@@ -103,7 +105,7 @@ public class RecipeServiceImpl implements RecipeService {
     for (String s : list) {
       recList.append(s).append(",");
     }
-    if(recList.length() == 0) {
+    if (recList.length() == 0) {
       recList.append(",");
     }
     return recList.toString();
@@ -171,8 +173,8 @@ public class RecipeServiceImpl implements RecipeService {
   @Override
   public boolean favRecipeChecker(String username, int recipeId) {
     List<Recipe> favRecipesList = returnFavouriteRecipes(username);
-    for(Recipe rec : favRecipesList) {
-      if(rec.getId().equals(recipeId) && rec.getId() != null) {
+    for (Recipe rec : favRecipesList) {
+      if (rec.getId().equals(recipeId) && rec.getId() != null) {
         return true;
       }
     }
@@ -182,11 +184,12 @@ public class RecipeServiceImpl implements RecipeService {
   private void removeFromFavRecipes(int recipeId) {
     String id = String.valueOf(recipeId);
     List<MyUser> userList = userRepository.findAll();
-    for(MyUser user : userList) {
+    for (MyUser user : userList) {
       String favRecipes = user.getFavRecipes();
-      if(favRecipes.contains(String.valueOf(recipeId))) {
-        favRecipes = favRecipes.replaceAll(id, "");
-        user.setFavRecipes(favRecipes);
+      List<String> favRecipesId = Stream.of(favRecipes.split(",")).collect(Collectors.toList());
+      if (favRecipesId.contains(id)) {
+        favRecipesId.remove(id);
+        user.setFavRecipes(favRecipeListWriter(favRecipesId));
       }
     }
   }
