@@ -19,8 +19,8 @@ public class DisplayController extends ResponseEntityExceptionHandler {
   @ModelAttribute("loggedinuser")
   public String getLoggedUserName(@CookieValue(value = "Bearer", required = false) String token,
                                   Model model) {
-    if (token == null) {
-      return "navbar";
+    if (token == null || token.isEmpty()) {
+      return "Anonymus";
     }
     String username = jwtUtil.extractUsername(token);
     model.addAttribute("loggedinuser", username);

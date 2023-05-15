@@ -1,6 +1,5 @@
 package com.recipeapp.controllers;
 
-import com.recipeapp.models.entities.MyUser;
 import com.recipeapp.models.entities.Recipe;
 import com.recipeapp.models.dtos.NewRecipeDTO;
 import com.recipeapp.models.dtos.ReturnRecipeDTO;
@@ -8,7 +7,6 @@ import com.recipeapp.security.JwtUtil;
 import com.recipeapp.services.RecipeService;
 import java.util.List;
 import javax.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
